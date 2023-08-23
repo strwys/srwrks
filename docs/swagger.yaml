@@ -1,0 +1,259 @@
+basePath: /v3
+definitions:
+  model.APIResponse:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+  model.CheckBalanceRequest:
+    properties:
+      address:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  model.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  model.LoginResponse:
+    properties:
+      data:
+        $ref: '#/definitions/model.UserPresenter'
+      token:
+        type: string
+    type: object
+  model.PayRequest:
+    properties:
+      address:
+        type: string
+      nominal_payment:
+        type: number
+      user_id:
+        type: integer
+    type: object
+  model.RegisterRequest:
+    properties:
+      birth_date:
+        type: string
+      city:
+        maxLength: 20
+        minLength: 2
+        type: string
+      email:
+        type: string
+      first_name:
+        maxLength: 20
+        minLength: 2
+        type: string
+      last_name:
+        maxLength: 20
+        minLength: 2
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      province:
+        type: string
+      street_address:
+        maxLength: 40
+        minLength: 5
+        type: string
+      username:
+        type: string
+    required:
+    - birth_date
+    - city
+    - email
+    - first_name
+    - last_name
+    - password
+    - phone
+    - province
+    - street_address
+    - username
+    type: object
+  model.ResponseError:
+    properties:
+      errors:
+        type: string
+    type: object
+  model.TopUpRequest:
+    properties:
+      address:
+        type: string
+      nominal:
+        type: number
+      user_id:
+        type: integer
+    type: object
+  model.UserPresenter:
+    properties:
+      birth_date:
+        type: string
+      city:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone:
+        type: string
+      province:
+        type: string
+      street_address:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server Starworks server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /api/user/login:
+    get:
+      description: Login endpoint
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ResponseError'
+      tags:
+      - user
+  /api/user/register:
+    post:
+      consumes:
+      - application/json
+      description: If successful, 'data' will contain an instance of model.User. If
+        an error occurs, 'data' will not be shown.
+      parameters:
+      - description: Register Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ResponseError'
+      tags:
+      - user
+  /api/wallet/check-balance:
+    get:
+      consumes:
+      - application/json
+      description: Check Balance endpoint
+      parameters:
+      - description: Check Balance Request
+        in: body
+        name: checkBalanceRequest
+        required: true
+        schema:
+          $ref: '#/definitions/model.CheckBalanceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ResponseError'
+      summary: Check Balance
+      tags:
+      - wallet
+  /api/wallet/pay:
+    post:
+      consumes:
+      - application/json
+      description: Pay endpoint
+      parameters:
+      - description: Pay Request
+        in: body
+        name: payRequest
+        required: true
+        schema:
+          $ref: '#/definitions/model.PayRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ResponseError'
+      summary: Pay
+      tags:
+      - wallet
+  /api/wallet/top-up:
+    post:
+      consumes:
+      - application/json
+      description: Top Up endpoint
+      parameters:
+      - description: Top Up Request
+        in: body
+        name: topUpRequest
+        required: true
+        schema:
+          $ref: '#/definitions/model.TopUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.ResponseError'
+      summary: Top Up
+      tags:
+      - wallet
+swagger: "2.0"
